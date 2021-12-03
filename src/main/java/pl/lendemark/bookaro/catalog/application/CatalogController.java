@@ -18,7 +18,8 @@ class CatalogController {
         return service.findByTitle(title);
     }
 
-//    public List<Book> findByAuthor(String author){
-//        return service.findByAuthor(author);
-//    }
+    public List<Book> findByAuthor(String author){
+        
+        return service.findByAuthor(author);
+    }
 }

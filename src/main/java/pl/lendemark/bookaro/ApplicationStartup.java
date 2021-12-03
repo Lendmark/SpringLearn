@@ -1,7 +1,5 @@
 package pl.lendemark.bookaro;
 
-import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import pl.lendemark.bookaro.catalog.application.CatalogController;

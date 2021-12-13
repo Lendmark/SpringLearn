@@ -16,7 +16,7 @@ public class CatalogService implements CatalogUseCase {
 
     private final CatalogRepository repository;
 
-    public CatalogService (@Qualifier("schoolCatalogRepository") CatalogRepository repository) {
+    public CatalogService(CatalogRepository repository) {
         this.repository = repository;
     }
 
@@ -38,7 +38,9 @@ public class CatalogService implements CatalogUseCase {
     }
 
     @Override
-    public void addBook(){
+    public void addBook(CreateCommandBook createCommandBook){
+        Book book = new Book(createCommandBook.getTitle(), createCommandBook.getAuthor(), createCommandBook.getYear());
+        repository.save(book);
 
     }
 

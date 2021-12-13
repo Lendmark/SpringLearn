@@ -1,5 +1,6 @@
 package pl.lendemark.bookaro.catalog.application.port;
 
+import lombok.Value;
 import pl.lendemark.bookaro.catalog.domain.Book;
 
 import java.util.List;
@@ -12,9 +13,16 @@ public interface CatalogUseCase {
 
     Optional<Book> findOneByTitleAndAuthor(String title, String author);
 
-    void addBook();
+    void addBook(CreateCommandBook createCommandBook);
 
     void removeById(Long id);
 
     void updateBook();
+
+    @Value
+    class CreateCommandBook{
+        String title;
+        String author;
+        Integer year;
+    }
 }

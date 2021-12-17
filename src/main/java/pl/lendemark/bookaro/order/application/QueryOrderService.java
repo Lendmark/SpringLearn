@@ -1,9 +1,10 @@
 package pl.lendemark.bookaro.order.application;
 
 import lombok.AllArgsConstructor;
-import org.springframework.core.annotation.Order;
+
 import org.springframework.stereotype.Service;
 import pl.lendemark.bookaro.order.application.port.QueryOrderUseCase;
+import pl.lendemark.bookaro.order.domain.Order;
 import pl.lendemark.bookaro.order.domain.OrderRepository;
 
 import java.util.List;

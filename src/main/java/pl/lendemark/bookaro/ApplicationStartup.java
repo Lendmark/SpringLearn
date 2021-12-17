@@ -1,11 +1,14 @@
 package pl.lendemark.bookaro;
 
-import lombok.Value;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import pl.lendemark.bookaro.catalog.application.port.CatalogUseCase;
+import pl.lendemark.bookaro.catalog.application.port.CatalogUseCase.*;
 import pl.lendemark.bookaro.catalog.domain.Book;
 import pl.lendemark.bookaro.order.application.port.PlaceOrderUseCase;
+import pl.lendemark.bookaro.order.application.port.PlaceOrderUseCase.PlaceOrderResponse;
+import pl.lendemark.bookaro.order.application.port.PlaceOrderUseCase.PlaceOrderCommand;
 import pl.lendemark.bookaro.order.application.port.QueryOrderUseCase;
 import pl.lendemark.bookaro.order.domain.OrderItem;
 import pl.lendemark.bookaro.order.domain.Recipient;
@@ -59,14 +62,14 @@ class ApplicationStartup implements CommandLineRunner {
                 .email("jan@example.org")
                 .build();
 
-        PlaceOrderUseCase.PlaceOrderCommand command = PlaceOrderUseCase.PlaceOrderCommand
+        PlaceOrderCommand command = PlaceOrderCommand
                 .builder()
                 .recipient(recipient)
                 .item(new OrderItem(panTadeusz, 16))
                 .item(new OrderItem(chlopi, 7))
                 .build();
 
-        PlaceOrderUseCase.PlaceOrderResponse response = placeOrder.placeOrder(command);
+        PlaceOrderResponse response = placeOrder.placeOrder(command);
         System.out.println("Created ORDER with id: " + response.getOrderId());
 
         // list all orders
@@ -83,10 +86,10 @@ class ApplicationStartup implements CommandLineRunner {
     }
 
     private void initData() {
-        catalog.addBook(new CatalogUseCase.CreateCommandBook("Pan Tadeusz", "Adam Mickiewicz", 1834, new BigDecimal("19.90")));
-        catalog.addBook(new CatalogUseCase.CreateCommandBook("Ogniem i Mieczem", "Henryk Sienkiewicz", 1884, new BigDecimal("29.90")));
-        catalog.addBook(new CatalogUseCase.CreateCommandBook("Chłopi", "Władysław Reymont", 1904, new BigDecimal("11.90")));
-        catalog.addBook(new CatalogUseCase.CreateCommandBook("Pan Wołodyjowski", "Henryk Sienkiewicz", 1899, new BigDecimal("14.90")));
+        catalog.addBook(new CreateCommandBook("Pan Tadeusz", "Adam Mickiewicz", 1834, new BigDecimal("19.90")));
+        catalog.addBook(new CreateCommandBook("Ogniem i Mieczem", "Henryk Sienkiewicz", 1884, new BigDecimal("29.90")));
+        catalog.addBook(new CreateCommandBook("Chłopi", "Władysław Reymont", 1904, new BigDecimal("11.90")));
+        catalog.addBook(new CreateCommandBook("Pan Wołodyjowski", "Henryk Sienkiewicz", 1899, new BigDecimal("14.90")));
     }
 
     private void findByTitle() {

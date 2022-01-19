@@ -7,7 +7,6 @@ import pl.lendemark.bookaro.catalog.domain.CatalogRepository;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -75,9 +74,10 @@ public class CatalogService implements CatalogUseCase {
     }
 
     @Override
-    public void addBook(CreateCommandBook command){
+    public Book addBook(CreateCommandBook command){
         Book book = command.toBook();
         repository.save(book);
+        return book;
 
     }
 

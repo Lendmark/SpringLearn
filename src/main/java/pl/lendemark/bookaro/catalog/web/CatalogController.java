@@ -4,9 +4,13 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.lendemark.bookaro.catalog.application.port.CatalogUseCase;
+import pl.lendemark.bookaro.catalog.application.port.CatalogUseCase.CreateCommandBook;
 import pl.lendemark.bookaro.catalog.domain.Book;
 
+import java.math.BigDecimal;
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,6 +42,35 @@ class CatalogController {
                 .findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<Void> addBook(@RequestBody RestCreateBookCommand command) {
+        Book book = catalog.addBook(command.toCommand());
+        return ResponseEntity.created(createBookUri(book)).build();
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteById(@PathVariable Long id){
+        catalog.removeById(id);
+    }
+
+    private URI createBookUri(Book book) {
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path(book.getId().toString()).build().toUri();
+        return uri;
+    }
+
+    private static class RestCreateBookCommand{
+        private String title;
+        private String author;
+        private Integer year;
+        private BigDecimal price;
+
+        CreateCommandBook toCommand(){
+            return new CreateCommandBook(title, author, year, price);
+        }
     }
 
 

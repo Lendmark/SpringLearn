@@ -1,6 +1,5 @@
 package pl.lendemark.bookaro.catalog.application;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import pl.lendemark.bookaro.catalog.application.port.CatalogUseCase;
 import pl.lendemark.bookaro.catalog.domain.Book;
@@ -8,6 +7,7 @@ import pl.lendemark.bookaro.catalog.domain.CatalogRepository;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -30,6 +30,23 @@ public class CatalogService implements CatalogUseCase {
     }
 
     @Override
+    public List<Book> findByAuthor(String author) {
+        return repository.findAll()
+                .stream()
+                .filter(book -> book.getAuthor().toLowerCase().contains(author.toLowerCase()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Book> findByTitleAndAuthor(String title, String author) {
+        return repository.findAll()
+                .stream()
+                .filter(book -> book.getTitle().toLowerCase().contains(title.toLowerCase()))
+                .filter(book -> book.getAuthor().toLowerCase().contains(author.toLowerCase()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<Book> findAll(){
         return repository.findAll();
     }
@@ -43,8 +60,8 @@ public class CatalogService implements CatalogUseCase {
     public Optional<Book> findOneByTitleAndAuthor(String title, String author){
         repository.findAll()
                 .stream()
-                .filter(book -> book.getTitle().startsWith(title))
-                .filter(book -> book.getAuthor().startsWith(author))
+                .filter(book -> book.getTitle().toLowerCase().contains(title.toLowerCase()))
+                .filter(book -> book.getAuthor().toLowerCase().contains(author.toLowerCase()))
                 .findFirst();
         return Optional.empty();
     }

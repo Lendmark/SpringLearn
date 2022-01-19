@@ -5,7 +5,6 @@ import lombok.Value;
 import pl.lendemark.bookaro.catalog.domain.Book;
 
 import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +12,8 @@ import static java.util.Collections.emptyList;
 
 public interface CatalogUseCase {
     List<Book> findAll();
+
+    Optional<Book> findById(Long id);
 
     List<Book> findByTitle(String title);
 

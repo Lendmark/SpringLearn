@@ -1,6 +1,7 @@
 package pl.lendemark.bookaro.catalog.web;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +10,11 @@ import pl.lendemark.bookaro.catalog.application.port.CatalogUseCase;
 import pl.lendemark.bookaro.catalog.application.port.CatalogUseCase.CreateCommandBook;
 import pl.lendemark.bookaro.catalog.domain.Book;
 
+import javax.validation.Valid;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.util.List;
@@ -46,7 +52,7 @@ class CatalogController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Void> addBook(@RequestBody RestCreateBookCommand command) {
+    public ResponseEntity<Void> addBook(@Valid @RequestBody RestCreateBookCommand command) {
         Book book = catalog.addBook(command.toCommand());
         return ResponseEntity.created(createBookUri(book)).build();
     }
@@ -58,14 +64,26 @@ class CatalogController {
     }
 
     private URI createBookUri(Book book) {
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path(book.getId().toString()).build().toUri();
-        return uri;
+        return ServletUriComponentsBuilder
+                .fromCurrentRequestUri()
+                .path(book.getId().toString())
+                .build()
+                .toUri();
     }
 
+    @Data
     private static class RestCreateBookCommand{
+        @NotBlank
         private String title;
+
+        @NotBlank
         private String author;
+
+        @NotNull
         private Integer year;
+
+        @NotNull
+        @DecimalMin("0.00")
         private BigDecimal price;
 
         CreateCommandBook toCommand(){

@@ -1,5 +1,6 @@
 package pl.lendemark.bookaro.catalog.application.port;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Value;
 import pl.lendemark.bookaro.catalog.domain.Book;
@@ -45,11 +46,13 @@ public interface CatalogUseCase {
 
     @Value
     @Builder
+    @AllArgsConstructor
     class UpdataBookCommand {
         Long id;
         String title;
         String author;
         Integer year;
+        BigDecimal price;
 
         public Book updateFields(Book book) {
             if (title != null) {

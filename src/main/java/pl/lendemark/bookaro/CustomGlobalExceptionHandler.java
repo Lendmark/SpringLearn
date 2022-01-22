@@ -24,7 +24,7 @@ class CustomGlobalExceptionHandler {
                 .map(x -> x.getField() + " - " + x.getDefaultMessage())
                 .collect(Collectors.toList());
         body.put("errors", errors);
-        return new ResponseEntity<>(body, status);
+        return new ResponseEntity(body, status);
 
     }
 }

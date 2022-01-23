@@ -5,6 +5,7 @@ import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.lendemark.bookaro.catalog.application.port.CatalogUseCase;
@@ -17,6 +18,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.util.*;
@@ -59,6 +61,26 @@ class CatalogController {
             String message = String.join(", ", response.getErrors());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, message);
         }
+
+    }
+
+    @PutMapping("/{id}/cover")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void addBookCover(@PathVariable Long id, @RequestParam("file")MultipartFile file) throws IOException {
+        catalog.updateBookCover(new UpdataBookCoverCommand(
+                id,
+                file.getBytes(),
+                file.getContentType(),
+                file.getOriginalFilename()
+        ));
+
+
+    }
+
+    @DeleteMapping("/{id}/cover")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void removeBookCover(@PathVariable Long id){
+        catalog.removeBookCover(id);
 
     }
 

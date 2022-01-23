@@ -1,9 +1,13 @@
 package pl.lendemark.bookaro.catalog.application;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.lendemark.bookaro.catalog.application.port.CatalogUseCase;
 import pl.lendemark.bookaro.catalog.domain.Book;
 import pl.lendemark.bookaro.catalog.domain.CatalogRepository;
+import pl.lendemark.bookaro.uploads.application.UploadService;
+import pl.lendemark.bookaro.uploads.application.ports.UploadUseCase;
+import pl.lendemark.bookaro.uploads.domain.Upload;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,14 +15,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-
+@AllArgsConstructor
 public class CatalogService implements CatalogUseCase {
 
     private final CatalogRepository repository;
-
-    public CatalogService(CatalogRepository repository) {
-        this.repository = repository;
-    }
+    private final UploadService upload;
 
     @Override
     public List<Book> findByTitle(String title){
@@ -99,6 +100,33 @@ public class CatalogService implements CatalogUseCase {
                 })
                 .orElseGet(()-> new UpdateBookResponse(false, Arrays.asList("Book not found with id: " + command.getId())));
         return null;
+    }
+
+    @Override
+    public void updateBookCover(UpdataBookCoverCommand command) {
+        repository.findById(command.getId())
+                .ifPresent(book -> {
+                    Upload savedUpload = upload.save(new UploadUseCase.SaveUploadCommand(
+                            command.getFilename(),
+                            command.getFile(),
+                            command.getContentType()
+                    ));
+                    book.setCoverId(savedUpload.getId());
+                    repository.save(book);
+
+                });
+    }
+
+    @Override
+    public void removeBookCover(Long id) {
+        repository.findById(id)
+                .ifPresent(book -> {
+                    if(book.getCoverId() != null){
+                        upload.removeById(book.getCoverId());
+                        book.setCoverId(null);
+                        repository.save(book);
+                    }
+                });
     }
 
 

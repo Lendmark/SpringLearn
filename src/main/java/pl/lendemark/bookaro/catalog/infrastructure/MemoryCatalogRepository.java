@@ -22,7 +22,7 @@ class MemoryCatalogRepository implements CatalogRepository {
         return new ArrayList<>(storage.values());
     }
 
-    public Book save(Book book){
+    public Book save(Object book){
         if (book.getId() != null){
             storage.put(book.getId(), book);
         } else {

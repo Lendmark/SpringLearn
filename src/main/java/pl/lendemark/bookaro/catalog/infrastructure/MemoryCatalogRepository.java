@@ -22,7 +22,7 @@ class MemoryCatalogRepository implements CatalogRepository {
         return new ArrayList<>(storage.values());
     }
 
-    public Book save(Object book){
+    public Book save(Book book){
         if (book.getId() != null){
             storage.put(book.getId(), book);
         } else {
@@ -35,7 +35,7 @@ class MemoryCatalogRepository implements CatalogRepository {
 
     @Override
     public Optional<Book> findById(Long id) {
-        return Optional.empty();
+        return Optional.ofNullable(storage.get(id));
     }
 
     @Override

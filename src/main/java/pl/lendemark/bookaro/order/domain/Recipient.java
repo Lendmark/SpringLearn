@@ -1,16 +1,17 @@
 package pl.lendemark.bookaro.order.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Value;
 
 @Value
 @Builder
-public
-class Recipient {
-    String name;
-    String phone;
-    String street;
-    String city;
-    String zipCode;
-    String email;
+@AllArgsConstructor
+public class Recipient {
+    private String name;
+    private String phone;
+    private String street;
+    private String city;
+    private String zipCode;
+    private String email;
 }

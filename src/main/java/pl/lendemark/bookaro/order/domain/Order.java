@@ -3,7 +3,6 @@ package pl.lendemark.bookaro.order.domain;
 import lombok.Builder;
 import lombok.Data;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,9 +21,5 @@ public class Order {
 
     private LocalDateTime createdAt;
 
-    public BigDecimal totalPrice(){
-        return items.stream()
-                .map(items -> items.getBook().getPrice().multiply(new BigDecimal(items.getQuantity())))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
+
 }

@@ -3,8 +3,8 @@ package pl.lendemark.bookaro.order.application;
 import lombok.AllArgsConstructor;
 
 import org.springframework.stereotype.Service;
+import pl.lendemark.bookaro.catalog.db.BookJpaRepository;
 import pl.lendemark.bookaro.catalog.domain.Book;
-import pl.lendemark.bookaro.catalog.domain.CatalogRepository;
 import pl.lendemark.bookaro.order.application.port.QueryOrderUseCase;
 import pl.lendemark.bookaro.order.domain.Order;
 import pl.lendemark.bookaro.order.domain.OrderItem;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 class QueryOrderService implements QueryOrderUseCase {
     private final OrderRepository orderRepository;
-    private final CatalogRepository catalogRepository;
+    private final BookJpaRepository catalogRepository;
 
     @Override
     public List<RichOrder> findAll() {

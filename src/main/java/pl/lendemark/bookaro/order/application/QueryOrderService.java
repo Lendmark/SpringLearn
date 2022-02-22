@@ -1,14 +1,13 @@
 package pl.lendemark.bookaro.order.application;
 
 import lombok.AllArgsConstructor;
-
 import org.springframework.stereotype.Service;
 import pl.lendemark.bookaro.catalog.db.BookJpaRepository;
 import pl.lendemark.bookaro.catalog.domain.Book;
 import pl.lendemark.bookaro.order.application.port.QueryOrderUseCase;
+import pl.lendemark.bookaro.order.db.OrderJpaRepository;
 import pl.lendemark.bookaro.order.domain.Order;
 import pl.lendemark.bookaro.order.domain.OrderItem;
-import pl.lendemark.bookaro.order.domain.OrderRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +16,7 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 class QueryOrderService implements QueryOrderUseCase {
-    private final OrderRepository orderRepository;
+    private final OrderJpaRepository orderRepository;
     private final BookJpaRepository catalogRepository;
 
     @Override
